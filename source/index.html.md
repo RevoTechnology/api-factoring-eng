@@ -9,44 +9,45 @@ toc_footers:
 - <a href='https://revo.ru/'>Revo.ru</a>
 - <a href='https://revo.ru/API/en'>API Documentation in English</a>
 
-<!-- includes:
-- business -->
+#includes:
+#- business
 
 search: true
 ---
 
-# Введение
+# Introduction
 
-API Factoring реализовано на протоколе HTTPS на основе JSON запросов.
+API Factoring is based on the HTTPS protocol with JSON queries.
 
-Документация состоит из следующих основных частей:
+The documentation consists of 4 main parts:
 
-* Описание авторизации, <a href="#api">методов API</a> и <a href="#cb76858662"> кодов ошибок</a>.
-* <a href="#iframe-revo">Описание iFrame Рево</a>.
-* <a href="#5a291e242a">Представление сервиса Рево на сайте</a>.
-* <a href="#db947828e5">Руководство по тестированию</a>.
 
-# Авторизация
+* Authorization description, <a href="#api">API methods</a> and <a href="#cb76858662">error codes</a>.
+* <a href="#iframe-revo">Revo iFrame description</a>.
+* <a href="#5a291e242a">Visualisation on a partner website</a>.
+* <a href="#db947828e5">Test manual</a>.
 
-## Базовые URL адреса
+# Authorization
+
+## Base URL addresses
 
 ```javascript
 BASE_URL = "https://r.revoplus.ru/"
 BASE_URL = "https://demo.revoplus.ru/"
 ```
 
-1. Для взаимодействия с сервисами Рево используются 2 базовых адреса:
- * https://r.revoplus.ru/ - адрес `production` сервиса.
- * https://demo.revoup.ru/ - адрес `demo` сервиса.
+1. To interact with Revo services, two base addresses are used:
+ * https://r.revoplus.ru/ - the `production` address of the service.
+ * https://demo.revoup.ru/ - the `demo` address of the service.
 2. `BASE_URL` - переменная обозначающая базовый адрес.
 
 <aside class="notice">
-Подключение должно производиться только по протоколу HTTPS  - при попытке подключения по HTTP будет возникать 404 ошибка.
+The connection is only supported via HTTPS protocol - when trying to connect via HTTP, error 404 will occur.
 </aside>
 
-## Параметры авторизации
+## Authorization parameters
 
-> Пример параметров
+> Parameters example
 
 ```javascript
 secret_key = "098f6bcd4621d373cade4e832627b4f6"
@@ -54,15 +55,15 @@ STORE_ID1 = 12
 STORE_ID2 = 13
 ```
 
-1. На стороне Рево формируются уникальный идентификатор магазина и секретный ключ, которые передаются партнеру:
- * `store_id` - уникальный идентификатор магазина. Для одного партнера может быть сформировано несколько уникальных идентификаторов, чаще всего, не менее 2. `STORE_ID1` используется для методов `Registration` и `Limit`. `STORE_ID2` - для всех остальных методов.
- * `secret_key` - секретный ключ, который используется при формировании электронно-цифровой подписи для аутентификации (проверки подлинности) параметров запроса с целью защиты формы от запуска сторонними лицами. Длина ключа от 8 байт. Алгоритм шифрования SHA1.
-2. Для авторизации партнер отправляет `POST` запрос, используя <a href="#1c37860b3b">цифровую подпись</a> `signature` и уникальный идентификатор магазина `store_id`.
-3. Примеры URL запросов можно посмотреть в разделе <a href="#api"> Методы API</a>.
+1. On Revo’s side a unique store identifier and a secret key are generated, which are transferred to the partner:
+ * `store_id` - unique store identifier. In most cases, at least two unique identifiers are generated: `STORE_ID1` is used for `Registration` and `Limit` methods. `STORE_ID2` - for all the other methods.
+ * `secret_key` - a secret key used when generating the digital signature for authentication of query parameters to protect the form from being launched by third parties. Key length is 8 bytes. Encryption algorithm is SHA1.
+2. For authorization, the partner sends POST query, using digital signature and unique store identifier `store_id`.
+3. Examples of URL queries can be found in <a href="#api">API Methods</a> section.
 
-## Принцип формирования цифровой подписи
+## Digital signature generation
 
-> Алгоритм формирования цифровой подписи
+> Algorithm of digital signature generation
 
 ```ruby--tab
 require 'digest/sha1'
@@ -71,7 +72,7 @@ data = "{\"order_id\": \"FACTPRECHR152632\", \"amount\": \"8300.00\"}"
 SIGNATURE = Digest::SHA1.hexdigest(data + secret_key)
 ```
 
-> Результатом шифрования в примере выше будет являться строка "cbfb21630cd585f59c3a50fc3365d8c26b97cd4e".
+> The result of the encryption in the above example is "cbfb21630cd585f59c3a50fc3365d8c26b97cd4e".
 
 ```java
 import java.io.UnsupportedEncodingException;
@@ -117,13 +118,13 @@ public class Main {
 }
 ```
 
-К строке `data` в формате json добавляется секретный ключ `secret_key`. К получившейся строке применяется алгоритм SHA1, в результате формируется цифровая подпись `signature`.
+A secret key `secret_key` is added to the data string in json format. SHA1 algorithm is then used to the generate a string which forms a digital `signature`.
 
 <aside class="notice">
-Необходимо обратить внимание, что при формировании signature длина всегда будет 40 символов по SHA1.
+Please note, that the signature length will always be 40 symbols according to SHA1.
 </aside>
 
-# Методы API
+# API Methods
 
 ## Registration
 
@@ -131,17 +132,17 @@ public class Main {
 POST BASE_URL/factoring/v1/limit/auth?store_id=STORE_ID1&signature=SIGNATURE
 ```
 
-Метод возвращает ссылку на iFrame для получения лимита. По завершению формы на адрес указанный в `callback_url` отправляется <a href="#callback_url2">json ответ</a> с результатом решения по лимиту клиента.
+The method returns a URL to the iFrame in order to get the client's limit. Upon completion of the form a json response with information about client's limit is sent to the address specified in `callback_url`.
 
-В зависимости от информации, которая есть о пользователе в системе Рево, форма будет иметь различное число шагов (для этого нужно передавать `primary_phone`) - см. подробнее <a href="#iframe-revo">Описание iFrame REVO</a>.
+Depending on the information about the user in the Revo system the form will have a different number of steps (`primary_phone` has to be specified) - see more info on <a href="#iframe-revo">REVO iFrame description</a>.
 
 <aside class="success">
-Если клиент уже заполнял личные данные на сайте партнёра, их следует передать в запросе для автозаполнения соответствующих полей формы.
+The personal data provided by the client on the partner's website should be sent in the query for autocompletion of the corresponding Revo iFrame data fields.
 </aside>
 
 ### Parameters
 
-> Пример запроса в формате json
+> Json query example
 
 ```jsonnet
 {
@@ -165,21 +166,21 @@ POST BASE_URL/factoring/v1/limit/auth?store_id=STORE_ID1&signature=SIGNATURE
 
 | | | |
 -:|-:|:-|:-
- |**callback_url**<br> <font color="#939da3">string</font> | <td colspan="2"> URL для ответа от Рево по решению для клиента.
- |**redirect_url**<br> <font color="#939da3">string</font>	| <td colspan="2"> URL для редиректа после нажатия на кнопку/ссылку в форме Рево "Вернуться в интернет магазин".
- |**current_order**<br> <font color="#939da3">object</font> | <td colspan="2"> Объект, содержащий информацию о заказе.
-<td colspan="2" style="text-align:right">**order_id**<br> <font color="#939da3">string</font> | | Уникальный номер заказа. Не более 255 символов. Можно использовать уникальную случайную строку.
- |**primary_phone**<br> <font color="#939da3">string, *optional*</font> | <td colspan="2"> Номер телефона клиента 10 цифр (без кода страны).
- |**primary_email**<br> <font color="#939da3">string, *optional*</font> | <td colspan="2"> Email клиента.
- |**person**<br> <font color="#939da3">object, *optional*</font> | <td colspan="2"> Объект, содержащий информацию о клиенте.
-  <td colspan="2" style="text-align:right">**first_name**<br> <font color="#939da3">string, *optional*</font> | | Имя клиента.
-  <td colspan="2" style="text-align:right">**surname**<br> <font color="#939da3">sring, *optional*</font> | | Фамилия клиента.
-  <td colspan="2" style="text-align:right">**patronymic**<br> <font color="#939da3">string, *optional*</font> | | Отчество клиента.
-  <td colspan="2" style="text-align:right">**birth_date**<br> <font color="#939da3">object, *optional*</font> | | Дата рождения клиента в формате `dd.mm.yyyy`.
+ |**callback_url**<br> <font color="#939da3">string</font> | <td colspan="2"> URL for Revo response with information about client's limit.
+ |**redirect_url**<br> <font color="#939da3">string</font>	| <td colspan="2"> URL for redirecting upon clicking the button "Return to online store” in the Revo form.
+ |**current_order**<br> <font color="#939da3">object</font> | <td colspan="2"> The object containing information about the order.
+<td colspan="2" style="text-align:right">**order_id**<br> <font color="#939da3">string</font> | | Unique order number. Maximum 255 characters. A unique random string can be used.
+ |**primary_phone**<br> <font color="#939da3">string, *optional*</font> | <td colspan="2"> Client’s phone number consisting of 10 digits (omitting the country code).
+ |**primary_email**<br> <font color="#939da3">string, *optional*</font> | <td colspan="2"> Client’s email.
+ |**person**<br> <font color="#939da3">object, *optional*</font> | <td colspan="2"> The object containing information about the client.
+  <td colspan="2" style="text-align:right">**first_name**<br> <font color="#939da3">string, *optional*</font> | |	Client’s name.
+  <td colspan="2" style="text-align:right">**surname**<br> <font color="#939da3">sring, *optional*</font> | | Client’s surname.
+  <td colspan="2" style="text-align:right">**patronymic**<br> <font color="#939da3">string, *optional*</font> | | Client's patronymic.
+  <td colspan="2" style="text-align:right">**birth_date**<br> <font color="#939da3">object, *optional*</font> | | Client’s birth date in `dd.mm.yyyy` format.
 
 ### Response Parameters
 
-> Пример ответа для успешной аутентификации.
+> Response example in case of successful authentication.
 
 ```jsonnet
 {
@@ -191,14 +192,14 @@ POST BASE_URL/factoring/v1/limit/auth?store_id=STORE_ID1&signature=SIGNATURE
 
  | |
 -:|:-
-**status**<br> <font color="#939da3">integer</font> | Код ответа.
-**message**<br> <font color="#939da3">string</font> | Короткое текстовое описание ответа.
-**iframe_url**<br> <font color="#939da3">string</font>	| Cсылка на сгенерированный iFrame.
+**status**<br> <font color="#939da3">integer</font> | Response code.
+**message**<br> <font color="#939da3">string</font> | A short text description of the response.
+**iframe_url**<br> <font color="#939da3">string</font>| URL for the generated iFrame.
 
 <a name="callback_url"></a>
 ### callback parameters
 
-> Пример callback-а при успешном завершении формы:
+> Callback example in case of successful authentication.
 
 ```jsonnet
 {
@@ -212,14 +213,14 @@ POST BASE_URL/factoring/v1/limit/auth?store_id=STORE_ID1&signature=SIGNATURE
 
  | |
 -:|:-
-**order_id**<br> <font color="#939da3">string</font> | Уникальный номер заказа. Не более 255 символов.
-**decision**<br> <font color="#939da3">string</font> | Решение по выдаче рассрочки. При положительном решении - значение `approved` (заявка ожидает финализации). При отрицательном решении - `declined`.
-**amount**<br> <font color="#939da3">float</font> | Сумма в рублях с копейками.
-**mobile_phone**<br> <font color="#939da3">string</font> | Номер телефона клиента 10 цифр (без кода страны).
-**email**<br> <font color="#939da3">string</font> | Email клиента.
+**order_id**<br> <font color="#939da3">string</font> | Unique order number. Maximum 255 characters.
+**decision**<br> <font color="#939da3">string</font> | Decision on instalments. In case of positive decision - `approved` (the order is waiting to be finalized). In case of negative decision - `declined`.
+**amount**<br> <font color="#939da3">float</font> | Amount in rubles.
+**mobile_phone**<br> <font color="#939da3">string</font> | Client’s phone number consisting of 10 digits (omitting the country code).
+**email**<br> <font color="#939da3">string</font> | Client's email.
 
 <aside class="success">
-При `decision` равном `declined` значение `amount` будет нулевое.
+If `decision` is equal to `declined` the `amount` value will be zero.
 </aside>
 
 ## Limit
@@ -228,11 +229,11 @@ POST BASE_URL/factoring/v1/limit/auth?store_id=STORE_ID1&signature=SIGNATURE
 POST BASE_URL/api/external/v1/client/limit?store_id=STORE_ID1&signature=SIGNATURE
 ```
 
-Метод для получения суммы лимита клиента по номеру его телефона. Для новых клиентов получить информацию о лимите только по номеру телефона нельзя.
+The method for obtaining the client’s limit amount using his phone number. Not applicable for new customers.
 
 ### Parameters
 
-> Пример запроса в формате json
+> Json query example
 
 ```jsonnet
 {
@@ -245,12 +246,12 @@ POST BASE_URL/api/external/v1/client/limit?store_id=STORE_ID1&signature=SIGNATUR
 
  | |
 -:|:-
-**client**<br> <font color="#939da3">object</font> | Объект, содержащий информацию о клиенте.
-**mobile_phone**<br> <font color="#939da3">string</font> | Номер телефона клиента 10 цифр (без кода страны).
+**client**<br> <font color="#939da3">object</font> | The object containing information about the client.
+**mobile_phone**<br> <font color="#939da3">string</font> | Client’s phone number consisting of 10 digits (omitting the country code).
 
 ### Response Parameters
 
-> Пример ответа, когда клиент найден в базе
+> Response example in case of a returning customer
 
 ```jsonnet
 {
@@ -268,7 +269,7 @@ POST BASE_URL/api/external/v1/client/limit?store_id=STORE_ID1&signature=SIGNATUR
 }
 ```
 
-> Пример ответа, когда клиент найден в базе, но выдача займа невозможна
+> Response example in case of a returning customer with installments products unavailable
 
 ```jsonnet
 {
@@ -286,7 +287,7 @@ POST BASE_URL/api/external/v1/client/limit?store_id=STORE_ID1&signature=SIGNATUR
 }
 ```
 
-> Пример ответа, когда клиент не найден в базе
+> Response example in case of a new customer
 
 ```jsonnet
 {
@@ -306,35 +307,33 @@ POST BASE_URL/api/external/v1/client/limit?store_id=STORE_ID1&signature=SIGNATUR
 
 | | | |
 -:|-:|:-|:-
- |**status**<br> <font color="#939da3">integer</font> | <td colspan="2"> Код ответа.
- |**message**<br> <font color="#939da3">string</font> | <td colspan="2"> Короткое текстовое описание ответа.
- |**client**<br> <font color="#939da3">object</font> | <td colspan="2"> Объект, содержащий информацию о клиенте.
- <td colspan="2" style="text-align:right">**mobile_phone**<br> <font color="#939da3">string</font> | | Номер телефона клиента 10 цифр (без кода страны).
- <td colspan="2" style="text-align:right">**limit_amount**<br> <font color="#939da3">string</font> | | Лимит средств, доступных клиенту, в рублях с копейками.
- <td colspan="2" style="text-align:right">**status**<br> <font color="#939da3">string</font> | | Статус пользователя. Возможные значения:<br>`active` - пользователю доступна услуга оплаты частями на сумму `limit_amount`;<br>`inactive` - пользователю не доступна услуга оплаты частями;<br>`new` - новый пользователь, которому доступна услуга оплаты частями на сумму `limit_amount`.
+ |**status**<br> <font color="#939da3">integer</font> | <td colspan="2"> Response code.
+ |**message**<br> <font color="#939da3">string</font> | <td colspan="2"> A short text description of the response.
+ |**client**<br> <font color="#939da3">object</font> | <td colspan="2"> The object containing information about the client.
+ <td colspan="2" style="text-align:right">**mobile_phone**<br> <font color="#939da3">string</font> | | Client’s phone number consisting of 10 digits (omitting the country code).
+ <td colspan="2" style="text-align:right">**limit_amount**<br> <font color="#939da3">string</font> | | The amount of funds available to the client in rubles.
+ <td colspan="2" style="text-align:right">**status**<br> <font color="#939da3">string</font> | | User status. Possible values:<br>`active` - the installments product is available to the user; <br>`inactive` - the installments product is unavailable to the user;<br>`new` - a new user with installments product available.
 
 ## Checkout
 ```ruby
 POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID2&signature=SIGNATURE
 ```
 
-Метод возвращает ссылку на iFrame для оформления заказа клиента. По завершению формы на адрес указанный в `callback_url` отправляется <a href="#callback_url">json ответ</a> с результатом оформления. В случае успешного оформления, средства в размере `amount` холдируются на счёте клиента в системе Рево.
+The method returns a URL to the iFrame for client's order registration. Upon completion of the form a json response with information about order registration is sent to the address specified in `callback_url`. In case of successful registration `amount` is withheld from clinent's funds in the Revo system.
 
-В зависимости от информации, которая есть о пользователе в системе Рево, форма будет иметь различное число шагов (для этого нужно передавать `primary_phone`) - см. <a href="#iframe-revo">Описание iFrame REVO</a>.
+Depending on the information about the user in the Revo system the form will have a different number of steps (`primary_phone` has to be specified) - see more info on <a href="#iframe-revo">REVO iFrame description</a>.
 
-Для бизнес-моделей, где клиенту необходимо осуществлять предоплату, метод поддерживает 2 способа предоплаты:
-
- * Если предоплата осуществлена до вызова iFrame, то информацию о ней необходимо передавать в `prepayment_amount`.
-
- * Если предоплата должна быть осуществлена после вызова iFrame, то производится соответствующая настройка на стороне Рево. При этом следует параметр `skip_result_page` выставлять как `true` и передавать в `redirect_url` адрес страницы предоплаты, на которую будет перенаправлен клиент по завершению оформления в iFrame.
+In case where prepayment is needed, there are 2 ways of prepayment implementation:
+•	If prepayment is made prior to opening the iFrame, then the prepayment amount should be sent using `prepayment_amount`.
+•	If prepayment is to be made after the iFrame is called, the corresponding setting on the Revo side is made. Parameter `skip_result_page` should be set as `true` and `redirect_url` should be set to the prepayment page, to which the client will be redirected upon the completion of registration in Revo iFrame.
 
 <aside class="success">
-Если клиент уже заполнял личные данные на сайте партнёра, их следует передать в запросе для автозаполнения соответствующих полей формы.
+The personal data provided by the client on the partner's website should be sent in the query for autocompletion of the corresponding Revo iFrame data fields.
 </aside>
 
 ### Parameters
 
-> Пример запроса в формате json
+> Json query example
 
 ```jsonnet
 {
@@ -388,11 +387,11 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID2&signature=SIGNATURE
 
 | | | |
 -:|-:|:-|:-
- |**callback_url**<br> <font color="#939da3">string</font> |<td colspan="2"> URL для ответа от Рево по решению для клиента.
- |**redirect_url**<br> <font color="#939da3">string</font>	|<td colspan="2"> URL для редиректа после нажатия на кнопку/ссылку в форме Рево "Вернуться в интернет магазин".
- |**current_order**<br> <font color="#939da3">object</font> |<td colspan="2"> Объект, содержащий информацию о заказе.
-<td colspan="2" style="text-align:right"> **order_id**<br> <font color="#939da3">string</font> | | Уникальный номер заказа. Не более 255 символов. Например, можно использовать нумерацию заказов в системе партнёра.
-<td colspan="2" style="text-align:right"> **valid_till**<br> <font color="#939da3">String, *optional*</font> | | Срок, в течении которого заказ считается актуальным (срок холдирования средств). По истечении срока заказ отменяется. Формат: `dd.mm.yyyy hh:mm:ss+hh:mm`, где после  "+" указывается часовой пояс относительно GMT. По умолчанию - 24 часа.
+ |**callback_url**<br> <font color="#939da3">string</font> |<td colspan="2"> URL for Revo response with information about client's limit.
+ |**redirect_url**<br> <font color="#939da3">string</font>	|<td colspan="2"> URL for redirecting upon clicking the button "Return to online store” in the Revo form.
+ |**current_order**<br> <font color="#939da3">object</font> |<td colspan="2"> An object containing information about the order.
+<td colspan="2" style="text-align:right"> **order_id**<br> <font color="#939da3">string</font> | | Unique order number. Maximum 255 characters. A unique random string can be used.
+<td colspan="2" style="text-align:right"> **valid_till**<br> <font color="#939da3">String, *optional*</font> | | A period during which the order is considered to be valid (funds are withheld for this period of time). When this period expires, the order is cancelled. Format: `dd.mm.yyyy hh:mm:ss+hh:mm`, where after "+" time zone related to GMT is specified. The default is 24 hours.Срок, в течении которого заказ считается актуальным (срок холдирования средств). По истечении срока заказ отменяется. Формат: `dd.mm.yyyy hh:mm:ss+hh:mm`, где после  "+" указывается часовой пояс относительно GMT. По умолчанию - 24 часа.
  <td colspan="2" style="text-align:right"> **term**<br> <font color="#939da3">integer, *optional*</font> | | Срок рассрочки в месяцах.
  <td colspan="2" style="text-align:right"> **amount**<br> <font color="#939da3">float</font> | | Сумма заказа в рублях с копейками.
  <td colspan="2" style="text-align:right"> **prepayment_amount**<br> <font color="#939da3">float, *optional*</font> | | Сумма уже внесённой клиентом предоплаты в рублях с копейками.
