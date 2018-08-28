@@ -391,13 +391,13 @@ The personal data provided by the client on the partner's website should be sent
  |**redirect_url**<br> <font color="#939da3">string</font>	|<td colspan="2"> URL for redirecting upon clicking the button "Return to online store” in the Revo form.
  |**current_order**<br> <font color="#939da3">object</font> |<td colspan="2"> An object containing information about the order.
  <td colspan="2" style="text-align:right"> **order_id**<br> <font color="#939da3">string</font> | | Unique order number. Maximum 255 characters. A unique random string can be used.
- <td colspan="2" style="text-align:right"> **valid_till**<br> <font color="#939da3">String, *optional*</font> | | A period during which the order is considered to be valid (funds are withheld for this period of time). When this period expires, the order is cancelled. Format: `dd.mm.yyyy hh:mm:ss+hh:mm`, where "hh:mm" after "+" is the time zone relative to GMT. The default value is 24 hours.
+ <td colspan="2" style="text-align:right"> **valid_till**<br> <font color="#939da3">String, *optional*</font> | | A period during which the order is considered to be valid (funds are withheld for this period of time). When this period expires, the order is cancelled. Format: `dd.mm.yyyy hh:mm:ss+hh:mm`, where `hh:mm` after "+" is the time zone relative to GMT. The default value is 24 hours.
  <td colspan="2" style="text-align:right"> **term**<br> <font color="#939da3">integer, *optional*</font> | | Installments period in months.
  <td colspan="2" style="text-align:right"> **amount**<br> <font color="#939da3">float</font> | | Total order amount in rubles.
  <td colspan="2" style="text-align:right"> **prepayment_amount**<br> <font color="#939da3">float, *optional*</font> | | The amount already prepaid by the client in rubles.
  |**primary_phone**<br> <font color="#939da3">string, *optional*</font> |<td colspan="2"> Client’s phone number consisting of 10 digits (omitting the country code).
  |**primary_email**<br> <font color="#939da3">string, *optional*</font> |<td colspan="2"> Client’s email.
- |**person**<br> <font color="#939da3">object, *optional*</font> |<td colspan="2"> The object containing information about the client.
+ |**person**<br> <font color="#939da3">object, *optional*</font> |<td colspan="2"> An object containing information about the client.
  <td colspan="2" style="text-align:right"> **first_name**<br> <font color="#939da3">string, *optional*</font> | | Client’s name.
  <td colspan="2" style="text-align:right"> **surname**<br> <font color="#939da3">sring, *optional*</font> | | Client’s surname.
  <td colspan="2" style="text-align:right"> **patronymic**<br> <font color="#939da3">string, *optional*</font> | | Client's patronymic.
@@ -409,9 +409,7 @@ The personal data provided by the client on the partner's website should be sent
  <td colspan="2" style="text-align:right"> **sale_price**<br> <font color="#939da3">float, *optional*</font> | | Product price with discount (if any).
  <td colspan="2" style="text-align:right"> **quantity**<br> <font color="#939da3">integer</font> | | Product quantity.
  <td colspan="2" style="text-align:right"> **brand**<br> <font color="#939da3">string, *optional*</font> | | Product brand.
- |**skip_result_page**<br> <font color="#939da3">bool, *optional*</font> |<td colspan="2"> A flag that determines whether the results page of the iFrame will be displayed. The default value is `false`.
- <br>`true` - upon successful registration completion the user is immediately redirected to `redirect_url`.
- <br>`false` - upon successful registration completion the user is presented with result page.
+ |**skip_result_page**<br> <font color="#939da3">bool, *optional*</font> |<td colspan="2"> A flag that determines whether the results page of the iFrame will be displayed. The default value is `false`. <br>`true` - upon successful registration completion the user is immediately redirected to `redirect_url`. <br>`false` - upon successful registration completion the user is presented with result page.
  |**additional_data**<br> <font color="#939da3">object, *optional*</font> |<td colspan="2"> An object containing additional order information.
  <td colspan="2" style="text-align:right"> **name**<br> <font color="#939da3">string, *optional*</font> | | Parameter name.
  <td colspan="2" style="text-align:right"> **value**<br> <font color="#939da3">string, *optional*</font> | | Parameter value.
@@ -446,7 +444,7 @@ The personal data provided by the client on the partner's website should be sent
 <a name="callback_url"></a>
 ### Callback parameters
 
-> Пример callback-а при успешном оформлении товара:
+> Callback example in case of success order registration.
 
 ```jsonnet
 {
@@ -483,26 +481,26 @@ The personal data provided by the client on the partner's website should be sent
 
 | | | |
 -:|-:|:-|:-
- |**order_id**<br> <font color="#939da3">string</font> |<td colspan="2"> Уникальный номер заказа. Не более 255 символов.
- |**decision**<br> <font color="#939da3">string</font> |<td colspan="2"> Решение по выдаче рассрочки. При положительном решении - значение `approved`. При отрицательном решении - `declined`.
- |**amount**<br> <font color="#939da3">float</font> |<td colspan="2"> Сумма к оплате частями в рублях с копейками.
- |**prepayment_amount**<br> <font color="#939da3">float, *optional*</font> |<td colspan="2"> Сумма предоплаты в рублях с копейками.
- |**total_amount**<br> <font color="#939da3">float, *optional*</font> |<td colspan="2"> Полная сумма заказа, с учётом предоплаты.
- |**term**<br> <font color="#939da3">integer</font> |<td colspan="2"> Срок рассрочки в месяцах.
- |**client**<br> <font color="#939da3">object</font> |<td colspan="2"> Объект, содержащий информацию о клиенте.
-<td colspan="2" style="text-align:right">**primary_phone**<br> <font color="#939da3">string</font> | | Номер телефона клиента 10 цифр (без кода страны).
-<td colspan="2" style="text-align:right">**primary_email**<br> <font color="#939da3">string, *optional*</font> | | Email клиента.
-<td colspan="2" style="text-align:right">**full_name**<br> <font color="#939da3">string</font> | | ФИО через пробел.
-<td colspan="2" style="text-align:right"> **first_name**<br> <font color="#939da3">string</font> | | Имя клиента.
-<td colspan="2" style="text-align:right"> **surname**<br> <font color="#939da3">sring</font> | | Фамилия клиента.
-<td colspan="2" style="text-align:right"> **patronymic**<br> <font color="#939da3">string</font> | | Отчество клиента.
- |**schedule**<br> <font color="#939da3">object</font> |<td colspan="2"> Объект, содержащий информацию о графике платежей.
-<td colspan="2" style="text-align:right">**date**<br> <font color="#939da3">string</font> | | Дата платежа в формате `dd.mm.yyyy`.
-<td colspan="2" style="text-align:right">**amount**<br> <font color="#939da3">float</font> | | Сумма платежа в рублях с копейками.
- |**monthly_overpayment**<br> <font color="#939da3">float</font> |<td colspan="2"> Величина ежемесячной переплаты в рублях с копейками.
+ |**order_id**<br> <font color="#939da3">string</font> |<td colspan="2"> Unique order number. Maximum 255 characters. A unique random string can be used.
+ |**decision**<br> <font color="#939da3">string</font> |<td colspan="2"> Decision on instalments. In case of positive decision - `approved` (the order is waiting to be finalized). In case of negative decision - `declined`.
+ |**amount**<br> <font color="#939da3">float</font> |<td colspan="2"> Amount in rubles withheld from client's Revo account.
+ |**prepayment_amount**<br> <font color="#939da3">float, *optional*</font> |<td colspan="2"> The amount already prepaid by the client in rubles.
+ |**total_amount**<br> <font color="#939da3">float, *optional*</font> |<td colspan="2"> Total order amount, including prepayment.
+ |**term**<br> <font color="#939da3">integer</font> |<td colspan="2"> Installments period in months.
+ |**client**<br> <font color="#939da3">object</font> |<td colspan="2"> An object containing information about the client.
+<td colspan="2" style="text-align:right">**primary_phone**<br> <font color="#939da3">string</font> | | Client’s phone number consisting of 10 digits (omitting the country code).
+<td colspan="2" style="text-align:right">**primary_email**<br> <font color="#939da3">string, *optional*</font> | | Client’s email.
+<td colspan="2" style="text-align:right">**full_name**<br> <font color="#939da3">string</font> | | Client's full name: last name, first name and patronymic diveded by spaces.
+<td colspan="2" style="text-align:right">**first_name**<br> <font color="#939da3">string</font> | | Cleint's first name.
+<td colspan="2" style="text-align:right">**surname**<br> <font color="#939da3">sring</font> | | Client's last name.
+<td colspan="2" style="text-align:right">**patronymic**<br> <font color="#939da3">string</font> | | Client's patronymic.
+ |**schedule**<br> <font color="#939da3">object</font> |<td colspan="2"> Object containing information about the payment schedule.
+<td colspan="2" style="text-align:right">**date**<br> <font color="#939da3">string</font> | | Payment date in `dd.mm.yyyy` format.
+<td colspan="2" style="text-align:right">**amount**<br> <font color="#939da3">float</font> | | Payment amount in rubles.
+ |**monthly_overpayment**<br> <font color="#939da3">float</font> |<td colspan="2"> Monthly overpayment amount in rubles.
 
 <aside class="success">
-При `decision` равном `declined` значение `amount` будет нулевое, а в `schedule` будет пустой массив.
+If `decision` is equal to `declined` then `amount` is zero and `schedule` is a empty object.
 </aside>
 
 ## Schedule
@@ -510,12 +508,11 @@ The personal data provided by the client on the partner's website should be sent
 ```ruby
 POST BASE_URL/factoring/v1/schedule?store_id=STORE_ID2&signature=SIGNATURE
 ```
-
-Метод возвращает информацию о доступных предварительных графиках платежей для заданной суммы корзины.
+The method returns information on the available preliminary payment schedules for the specified purchase price.
 
 ### Parameters
 
-> Пример запроса в формате json
+> Json query example
 
 ```jsonnet
 {
@@ -525,11 +522,11 @@ POST BASE_URL/factoring/v1/schedule?store_id=STORE_ID2&signature=SIGNATURE
 
  | |
 -:|:-
-**amount**<br> <font color="#939da3">float</font> | Сумма к оплате частями в рублях с копейками.
+**amount**<br> <font color="#939da3">float</font> | Amount in rubles withheld from client's Revo account.
 
 ### Response Parameters
 
-> Пример ответа, когда доступны два графика платежей: на 3 и 6 месяцев.
+> Response example in case when 2 payment schedules are available: 3 and 6 months.
 
 ```jsonnet
 {
@@ -591,15 +588,15 @@ POST BASE_URL/factoring/v1/schedule?store_id=STORE_ID2&signature=SIGNATURE
 
 | | | | | |
 -:|-:|-:|:-|:-|:-
- | **message**<br> <font color="#939da3">string</font> | | <td colspan="3"> Короткое текстовое описание ответа.
- | **payment_schedule**<br> <font color="#939da3">object</font> | | <td colspan="3"> Массив объектов, содержащий информацию о предварительных графиках платежей.
- <td colspan="2" style="text-align:right">**total**<br> <font color="#939da3">float</font> | | <td colspan="2" style="text-align:left"> Полная сумма рассрочки с учётом переплаты.
- <td colspan="2" style="text-align:right">**monthly_payment**<br> <font color="#939da3">float</font> | | <td colspan="2" style="text-align:left"> Приблизительная величина ежемесячного платежа с учётом переплаты.
- <td colspan="2" style="text-align:right">**monthly_overpayment**<br> <font color="#939da3">float</font> | | <td colspan="2" style="text-align:left"> Величина ежемесячной переплаты в рублях с копейками.
- <td colspan="2" style="text-align:right">**term**<br> <font color="#939da3">int</font> | | <td colspan="2" style="text-align:left"> Срок рассрочки в месяцах.
- <td colspan="2" style="text-align:right">**payment_dates**<br> <font color="#939da3">object</font> | | <td colspan="2" style="text-align:left"> Объект, содержащий информацию о графике платежей.
- <td colspan="3" style="text-align:right">**date**<br> <font color="#939da3">string</font> | | | Дата платежа в формате `dd.mm.yyyy`.
- <td colspan="3" style="text-align:right">**amount**<br> <font color="#939da3">float</font> | | | Сумма платежа в рублях с копейками.
+ | **message**<br> <font color="#939da3">string</font> | | <td colspan="3"> A short text description of the response.
+ | **payment_schedule**<br> <font color="#939da3">object</font> | | <td colspan="3"> 	Object containing information about the payment schedule.
+ <td colspan="2" style="text-align:right">**total**<br> <font color="#939da3">float</font> | | <td colspan="2" style="text-align:left"> Total order amount, including overpayment.
+ <td colspan="2" style="text-align:right">**monthly_payment**<br> <font color="#939da3">float</font> | | <td colspan="2" style="text-align:left"> Monthly payment amount in rubles.
+ <td colspan="2" style="text-align:right">**monthly_overpayment**<br> <font color="#939da3">float</font> | | <td colspan="2" style="text-align:left"> Monthly overpayment amount in rubles.
+ <td colspan="2" style="text-align:right">**term**<br> <font color="#939da3">int</font> | | <td colspan="2" style="text-align:left"> 	Installments period in months.
+ <td colspan="2" style="text-align:right">**payment_dates**<br> <font color="#939da3">object</font> | | <td colspan="2" style="text-align:left"> 	Object containing information about the payment schedule.
+ <td colspan="3" style="text-align:right">**date**<br> <font color="#939da3">string</font> | | | Payment date in `dd.mm.yyyy` format.
+ <td colspan="3" style="text-align:right">**amount**<br> <font color="#939da3">float</font> | | | Payment amount in rubles.
 
 ## Status
 
@@ -607,11 +604,11 @@ POST BASE_URL/factoring/v1/schedule?store_id=STORE_ID2&signature=SIGNATURE
  POST BASE_URL/factoring/v1/status?store_id=STORE_ID2&signature=SIGNATURE
  ```
 
- Метод возвращает информацию по статусу заказа.
+The method returns information on the order status.
 
 ### Parameters
 
- > Пример запроса в формате json
+ > Json query example
 
  ```jsonnet
  {
@@ -621,11 +618,11 @@ POST BASE_URL/factoring/v1/schedule?store_id=STORE_ID2&signature=SIGNATURE
 
   | |
  -:|:-
- **order_id**<br> <font color="#939da3">string</font> | Уникальный номер заказа. Не более 255 символов.
+ **order_id**<br> <font color="#939da3">string</font> | Unique order number. Maximum 255 characters. A unique random string can be used.
 
 ### Response Parameters
 
- > Пример ответа, когда клиент прошел до конца оформление в Iframe и ожидает ответа по заказу от Партнера
+ > Response example in case when the client has completed the registration process (Revo iFrame) and is awaiting the Partner response
 
  ```jsonnet
 {
@@ -643,7 +640,7 @@ POST BASE_URL/factoring/v1/schedule?store_id=STORE_ID2&signature=SIGNATURE
 }
 ```
 
-> Пример ответа, когда клиент прошел до конца оформления в Iframe, но партнер отменил заказ
+> Response example in case when the client has completed the registration process (Revo iFrame) and the Parter has cancelled the order.
 
 ```jsonnet
 {
@@ -661,7 +658,7 @@ POST BASE_URL/factoring/v1/schedule?store_id=STORE_ID2&signature=SIGNATURE
 }
 ```
 
-> Пример ответа, когда клиент прошел до конца оформления в Iframe, партнер подтвердил заказ.
+> Response example in case when the client has completed the registration process (Revo iFrame) and the Partner has confirmed the order.
 
 ```jsonnet
 {
@@ -679,7 +676,7 @@ POST BASE_URL/factoring/v1/schedule?store_id=STORE_ID2&signature=SIGNATURE
 }
 ```
 
-> Пример ответа, когда произошел отказ по политикам Рево
+> Response example in case when the order was declined by Revo
 
 ```jsonnet
 {
@@ -697,7 +694,7 @@ POST BASE_URL/factoring/v1/schedule?store_id=STORE_ID2&signature=SIGNATURE
 }
 ```
 
-> Пример ответа, когда срок холдирования по заявке истёк. Заявка отменена.
+> Response example in case when funds withholding period has elapsed. The order is cancelled.
 
 ```jsonnet
 {
@@ -715,7 +712,7 @@ POST BASE_URL/factoring/v1/schedule?store_id=STORE_ID2&signature=SIGNATURE
 }
 ```
 
-> Пример ответа, когда клиент успешно прошел оформление в iframe, партнер подтвердил заказ. Был произведен полный возврат.
+> Response example in case when the client has completed the registration process (Revo iFrame) and the Partner has confirmed the order. Then the order has been returned.
 
 ```jsonnet
 {
@@ -735,29 +732,29 @@ POST BASE_URL/factoring/v1/schedule?store_id=STORE_ID2&signature=SIGNATURE
 
  | | | |
  -:|-:|:-|:-
-  |**status**<br> <font color="#939da3">integer</font> | <td colspan="2"> Код ответа. |
-  |**message**<br> <font color="#939da3">string</font> | <td colspan="2"> Короткое текстовое описание ответа. |
-  |**current_order**<br> <font color="#939da3">object</font> | <td colspan="2"> Объект, содержащий информацию о заказе. |
-  <td colspan="2" style="text-align:right">**order_id**<br> <font color="#939da3">string</font> | | Уникальный номер заказа. Не более 255 символов. |
-  <td colspan="2" style="text-align:right">**expired**<br> <font color="#939da3">bool</font> | | Флаг, отображающий статус актуальности заказа (холдирования средств). Для актуальных заказов - `false`. Становится `true` при наступлении срока `valid_till`. |
-  <td colspan="2" style="text-align:right">**status**<br> <font color="#939da3">string</font> | | Информация по статусу заказа. Возможные значения:<br> `pending`, `hold`, `finished`, `canceled`, `declined`, `refunded`. |
-  <td colspan="2" style="text-align:right">**decision**<br> <font color="#939da3">string</font> | | Информация по статусу лимита. Если лимит одобрен - `approved`. Если в лимите отказано - `declined`.|
-  <td colspan="2" style="text-align:right">**amount**<br> <font color="#939da3">float</font> | | Сумма, оформленная клиентом для оплаты частями, в рублях с копейками. |
-  <td colspan="2" style="text-align:right">**term**<br> <font color="#939da3">integer</font> | | Срок рассрочки в месяцах. |
+  |**status**<br> <font color="#939da3">integer</font> | <td colspan="2"> Response code. |
+  |**message**<br> <font color="#939da3">string</font> | <td colspan="2"> A short text description of the response. |
+  |**current_order**<br> <font color="#939da3">object</font> | <td colspan="2"> An object containing information about the order. |
+  <td colspan="2" style="text-align:right">**order_id**<br> <font color="#939da3">string</font> | | Unique order number. Maximum 255 characters. A unique random string can be used. |
+  <td colspan="2" style="text-align:right">**expired**<br> <font color="#939da3">bool</font> | | Flag showing the current order status (funds withholding). The value is `false` for valid orders and `true` for expired orders (`valid_till` date and time has come). |
+  <td colspan="2" style="text-align:right">**status**<br> <font color="#939da3">string</font> | | Order status information. Possible values:<br> `pending`, `hold`, `finished`, `canceled`, `declined`, `refunded`. |
+  <td colspan="2" style="text-align:right">**decision**<br> <font color="#939da3">string</font> | | Decision on instalments. In case of positive decision - `approved` (the order is waiting to be finalized). In case of negative decision - `declined`.|
+  <td colspan="2" style="text-align:right">**amount**<br> <font color="#939da3">float</font> | | Total order amount in rubles. |
+  <td colspan="2" style="text-align:right">**term**<br> <font color="#939da3">integer</font> | | Installments period in months. |
 
 ### Status and Decision values
 
  | | |
  :-|:-|:-
  **Decision** | **Status** | **Description** |
- `null` | `pending` | Клиент не дошёл до конца оформления в форме. Решения о лимите не принято. |
- `approved` | `hold` | Лимит одобрен, средства захолдированы, ожидается финализация заказа. |
- `approved` | `finished` | Заказ финализирован. При последующем изменении `expired`, либо при частичном возврате значение `status` не поменяется. |
- `approved` | `canceled` | Заказ отменен. При последующем изменении `expired` значение `status` не поменяется. |
- `approved` | `expired` | Лимит одобрен, срок холдирования по заказу истёк. |
- `approved` | `refunded` | Был произведен полный возврат средств по заказу. При частичном возврате `status` останется `finished`. |
- `approved` | `declined` | Лимит одобрен, услуга оплаты частями не доступна клиенту (например, сумма заказа превышает лимит). |
- `declined` | `declined` | В лимите отказано по политикам Рево. |
+ `null` | `pending` | Client hasn't completed the registration form. There is no decision yet.|
+ `approved` | `hold` | Client's limit is approved, funds are withheld and the order is avaiting finalization. |
+ `approved` | `finished` | Order is finalized. In case of subsequent expiration or in case of partial return this status doesn't change. |
+ `approved` | `canceled` | Order is cancelled. In case of subsequent expiration this status doesn't change. |
+ `approved` | `expired` | Client's limit is approved, order expired. |
+ `approved` | `refunded` | Order was fully refunded. In case of partial return `status` is qual to `finished`. |
+ `approved` | `declined` | Client's limit is approved, installments product is unavailable to the client (order amount is above client's limit). |
+ `declined` | `declined` | Client's limit is declined by Revo. |
 
 
 ## Change
@@ -766,11 +763,11 @@ POST BASE_URL/factoring/v1/schedule?store_id=STORE_ID2&signature=SIGNATURE
 POST BASE_URL/factoring/v1/precheck/change?store_id=STORE_ID2&signature=SIGNATURE
 ```
 
-Метод для изменения суммы уже созданного заказа.
+Method for changing an order.
 
 ### Parameters
 
-> Пример запроса в формате json
+> Json query example
 
 ```jsonnet
 {
@@ -789,20 +786,20 @@ POST BASE_URL/factoring/v1/precheck/change?store_id=STORE_ID2&signature=SIGNATUR
 
  | | | |
 -:|-:|:-|:-
- |**order_id**<br> <font color="#939da3">string</font> |<td colspan="2"> Уникальный номер заказа. Не более 255 символов.
- |**amount**<br> <font color="#939da3">float</font> |<td colspan="2"> Сумма в рублях с копейками.
- |**valid_till**<br> <font color="#939da3">String, *optional*</font> |<td colspan="2"> Срок, в течении которого заказ считается актуальным (срок холдирования средств). По истечении срока заказ отменяется. Формат: `dd.mm.yyyy hh:mm:ss+hh:mm`, где после  "+" указывается часовой пояс относительно GMT. По умолчанию - 24 часа.
- |**cart_items**<br> <font color="#939da3">object</font> |<td colspan="2"> Объект, содержащий массив с информацией о заказе.
-<td colspan="2" style="text-align:right"> **sku**<br> <font color="#939da3">string, *optional*</font> | | Складская учётная единица (stock keeping unit).
-<td colspan="2" style="text-align:right"> **name**<br> <font color="#939da3">string</font> | | Наименование товара.
-<td colspan="2" style="text-align:right"> **price**<br> <font color="#939da3">float</font> | | Цена товара.
-<td colspan="2" style="text-align:right"> **sale_price**<br> <font color="#939da3">float, *optional*</font> | | Цена товара со скидкой (если есть).
-<td colspan="2" style="text-align:right"> **quantity**<br> <font color="#939da3">integer</font> | | Количество товара. Если передано нецелое число, то в форме не отображается.
-<td colspan="2" style="text-align:right"> **brand**<br> <font color="#939da3">string, *optional*</font> | | Бренд товара.
+ |**order_id**<br> <font color="#939da3">string</font> |<td colspan="2"> Unique order number. Maximum 255 characters. A unique random string can be used.
+ |**amount**<br> <font color="#939da3">float</font> |<td colspan="2"> 	Total order amount in rubles.
+ |**valid_till**<br> <font color="#939da3">String, *optional*</font> |<td colspan="2"> A period during which the order is considered to be valid (funds are withheld for this period of time). When this period expires, the order is cancelled. Format: `dd.mm.yyyy hh:mm:ss+hh:mm`, where `hh:mm` after "+" is the time zone relative to GMT. The default value is 24 hours.
+ |**cart_items**<br> <font color="#939da3">object</font> |<td colspan="2"> An object containing information about the order.
+<td colspan="2" style="text-align:right"> **sku**<br> <font color="#939da3">string, *optional*</font> | |Stock keeping unit.
+<td colspan="2" style="text-align:right"> **name**<br> <font color="#939da3">string</font> | | Product name.
+<td colspan="2" style="text-align:right"> **price**<br> <font color="#939da3">float</font> | | Product price.
+<td colspan="2" style="text-align:right"> **sale_price**<br> <font color="#939da3">float, *optional*</font> | | Product price in case of discount (if available).
+<td colspan="2" style="text-align:right"> **quantity**<br> <font color="#939da3">integer</font> | | Product quantity.
+<td colspan="2" style="text-align:right"> **brand**<br> <font color="#939da3">string, *optional*</font> | | Product brand.
 
 ### Response parameters
 
-> Пример ответа при успешном изменении заказа:
+> Response example in case of successful change.
 
 ```jsonnet
 {
@@ -826,11 +823,11 @@ POST BASE_URL/factoring/v1/precheck/change?store_id=STORE_ID2&signature=SIGNATUR
 
 | | | |
 -:|-:|:-|:-
- |**status**<br> <font color="#939da3">integer</font> |<td colspan="2"> Код ответа.
- |**message**<br> <font color="#939da3">string</font> |<td colspan="2"> Короткое текстовое описание ответа.
- |**schedule**<br> <font color="#939da3">object</font> |<td colspan="2"> Объект, содержащий информацию о графике платежей.
-<td colspan="2" style="text-align:right">**date**<br> <font color="#939da3">string</font> | | Дата платежа в формате `dd.mm.yyyy`.
-<td colspan="2" style="text-align:right">**amount**<br> <font color="#939da3">float</font> | | Сумма платежа в рублях с копейками.
+ |**status**<br> <font color="#939da3">integer</font> |<td colspan="2"> Response code.
+ |**message**<br> <font color="#939da3">string</font> |<td colspan="2"> A short text description of the response.
+ |**schedule**<br> <font color="#939da3">object</font> |<td colspan="2"> Object containing information about the payment schedule.
+<td colspan="2" style="text-align:right">**date**<br> <font color="#939da3">string</font> | | Payment date in `dd.mm.yyyy` format.
+<td colspan="2" style="text-align:right">**amount**<br> <font color="#939da3">float</font> | | Payment amount in rubles.
 
 ## Cancel
 
@@ -838,11 +835,11 @@ POST BASE_URL/factoring/v1/precheck/change?store_id=STORE_ID2&signature=SIGNATUR
 POST BASE_URL/factoring/v1/precheck/cancel?store_id=STORE_ID2&signature=SIGNATURE
 ```
 
-Метод для отмены заказа. При отмене у клиента разблокируются ранее захолдированные средства.
+Method for order cancellation. The whitheld amount of client's funds is unblocked upon cancellation.
 
 ### Parameters
 
-> Пример запроса в формате json
+> Json query example
 
 ```jsonnet
 {
@@ -852,11 +849,11 @@ POST BASE_URL/factoring/v1/precheck/cancel?store_id=STORE_ID2&signature=SIGNATUR
 
  | |
 -:|:-
-**order_id**<br> <font color="#939da3">string</font> | Уникальный номер заказа. Не более 255 символов.
+**order_id**<br> <font color="#939da3">string</font> | Unique order number. Maximum 255 characters. A unique random string can be used.
 
 ### Response Parameters
 
-> Пример ответа, когда файл успешно подгружен
+> Response example in case of successful order cancellation.
 
 ```jsonnet
 {
@@ -867,8 +864,8 @@ POST BASE_URL/factoring/v1/precheck/cancel?store_id=STORE_ID2&signature=SIGNATUR
 
  | |
 -:|:-
-**status**<br> <font color="#939da3">integer</font> | Код ответа.
-**message**<br> <font color="#939da3">string</font> | Короткое текстовое описание ответа.
+**status**<br> <font color="#939da3">integer</font> | Response code.
+**message**<br> <font color="#939da3">string</font> | A short text description of the response.
 
 ## Finish
 
@@ -876,15 +873,15 @@ POST BASE_URL/factoring/v1/precheck/cancel?store_id=STORE_ID2&signature=SIGNATUR
 POST BASE_URL/factoring/v1/precheck/finish?store_id=STORE_ID2&signature=SIGNATURE
 ```
 
-Метод для финализации заказа путём передачи договора купли-продажи на обслуживание в Рево. Запрос должен быть отправлен c типом содержимого multipart/form-data. В запросе должны быть указаны два ключа. Первый ключ с названием `body`, в котором должно быть указано тело json запроса. Второй ключ с названием `check`, где прикладывается файл(фискальный документ). `Signature` формируется по основному принципу, без второго ключа.
+Method for finalizing the order by transferring the sales contract to Revo. The query content type is `multipart/form-data`. Two keys have to be specified in the query: the first one named 'body' that contains the json query and the second one named `check` where the file (fiscal document, i.e. receipt) is attached. `Signature` is formed in the usual way - without the second key.
 
 <aside class="notice">
-При попытке финализации заявки с истекшим сроком `valid_till`, будет вызван метод `cancel`.
+Finilizing an order that has already been expired will result in execution of `Cancel` method.
 </aside>
 
 ### Parameters
 
-> Пример запроса в формате json
+> Json query example
 
 ```jsonnet
 {
@@ -896,13 +893,13 @@ POST BASE_URL/factoring/v1/precheck/finish?store_id=STORE_ID2&signature=SIGNATUR
 
  | |
 -:|:-
-**order_id**<br> <font color="#939da3">string</font> | Уникальный номер заказа. Не более 255 символов.
-**amount**<br> <font color="#939da3">float</font> | Сумма в рублях с копейками.
-**check_number**<br> <font color="#939da3">string</font> | Номер фискального документа в системе партнёра (например, номер чека).
+**order_id**<br> <font color="#939da3">string</font> | Unique order number. Maximum 255 characters.
+**amount**<br> <font color="#939da3">float</font> | Amount in rubles.
+**check_number**<br> <font color="#939da3">string</font> | Fiscal document number according to Partner's system (i.e. receipt number).
 
 ### Response Parameters
 
-> Пример ответа, когда файл успешно подгружен
+> Response example in case of successful document upload.
 
 ```jsonnet
 {
@@ -913,8 +910,8 @@ POST BASE_URL/factoring/v1/precheck/finish?store_id=STORE_ID2&signature=SIGNATUR
 
  | |
 -:|:-
-**status**<br> <font color="#939da3">integer</font> | Код ответа.
-**message**<br> <font color="#939da3">string</font> | Короткое текстовое описание ответа.
+**status**<br> <font color="#939da3">integer</font> | Response code.
+**message**<br> <font color="#939da3">string</font> | A short text description of the response.
 
 ## Return
 
@@ -922,11 +919,11 @@ POST BASE_URL/factoring/v1/precheck/finish?store_id=STORE_ID2&signature=SIGNATUR
 POST BASE_URL/factoring/v1/return?store_id=STORE_ID2&signature=SIGNATURE
 ```
 
-Метод для осуществления процедуры полного или частичного возврата заказа. Возвращать можно только уже финализированный заказ. Если заказ ещё не финализирован, вместо возврата его необходимо отменить с помощью метода <a href="#cancel">Cancel</a>. Частичный возврат можно провести не ранее, чем на следующий день после финализации. При возврате средства на счёт клиента зачисляются в полном объёме, включая переплаты, если клиент уже совершал платежи для погашения рассрочки.
+Method for performing a full or partial return. Only a finalized order can be returned. For unfinalized orders <a href="#cancel">Cancel</a> method has to be used.   Если заказ ещё не финализирован, вместо возврата его необходимо отменить с помощью метода <a href="#cancel">Cancel</a>. Частичный возврат можно провести не ранее, чем на следующий день после финализации. При возврате средства на счёт клиента зачисляются в полном объёме, включая переплаты, если клиент уже совершал платежи для погашения рассрочки.
 
 ### Parameters
 
-> Пример запроса в формате json
+> Json query example
 
 ```jsonnet
 {
@@ -937,8 +934,8 @@ POST BASE_URL/factoring/v1/return?store_id=STORE_ID2&signature=SIGNATURE
 
  | |
 -:|:-
-**order_id**<br> <font color="#939da3">string</font> | Уникальный номер заказа. Не более 255 символов.
-**amount**<br> <font color="#939da3">float</font> | Сумма возврата в рублях с копейками. Возврат может быть как полным, так и частичным.
+**order_id**<br> <font color="#939da3">string</font> | Unique order number. Maximum 255 characters.
+**amount**<br> <font color="#939da3">float</font> | Amount to be returned in rubles. A return can either be full or partial.
 
 ### Response Parameters
 
@@ -979,6 +976,7 @@ POST BASE_URL/factoring/v1/return?store_id=STORE_ID2&signature=SIGNATURE
 **30** | Wrong order `order_sum` format | Нверный формат `order_sum`.
 **32** | Order amount is different from the amount specified before | Указанная при финализации сумма заказа отличается от суммы, на которую совершен заказ. Финализация не осуществлена.
 **33** | Order amount is outside of tariff_limits | Сумма заявки не входит в диапазон, установленный в тарифе партнёра. Заявка не создана.
+**34** | Order term value is wrong | Указано некорректное значение срока рассрочки `term` (не существует такого тарифа).
 **35** | Order prepayment amount is wrong | Величина `prepayment_amount` превосходит `amount`.
 **40** | Order `callback_url` missing | Не указан `callback_url`.
 **41** | Order `redirect_url` missing | Не указан `redirect_url`.
