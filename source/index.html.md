@@ -915,11 +915,12 @@ Finilizing an order that has already been expired will result in execution of `C
 
 ## Return
 
+
 ```ruby
 POST BASE_URL/factoring/v1/return?store_id=STORE_ID2&signature=SIGNATURE
 ```
 
-Method for performing a full or partial return. Only a finalized order can be returned. For unfinalized orders <a href="#cancel">Cancel</a> method has to be used.   Если заказ ещё не финализирован, вместо возврата его необходимо отменить с помощью метода <a href="#cancel">Cancel</a>. Частичный возврат можно провести не ранее, чем на следующий день после финализации. При возврате средства на счёт клиента зачисляются в полном объёме, включая переплаты, если клиент уже совершал платежи для погашения рассрочки.
+Method for performing a full or partial return. Only a finalized order can be returned. For unfinalized orders <a href="#cancel">Cancel</a> method has to be used. Partial returns are available starting from the next day after finalization. Client's funds are fully reimbursed including any overpayments at any given point in time until the end of installments payment period.
 
 ### Parameters
 
@@ -939,7 +940,7 @@ Method for performing a full or partial return. Only a finalized order can be re
 
 ### Response Parameters
 
-> Пример ответа при успешной обработке запроса на возврат
+> Json response example in case of successful return
 
 ```jsonnet
 {
@@ -948,7 +949,7 @@ Method for performing a full or partial return. Only a finalized order can be re
 }
 ```
 
-> Пример ответа при неуспешной обработке запроса на возврат
+> Json response example in case of unsuccessful return
 
 ```jsonnet
 {
@@ -959,150 +960,150 @@ Method for performing a full or partial return. Only a finalized order can be re
 
  | |
 -:|:-
-**status**<br> <font color="#939da3">integer</font> | Код ответа.
-**message**<br> <font color="#939da3">string</font> | Короткое текстовое описание ответа.
+**status**<br> <font color="#939da3">integer</font> | Response code.
+**message**<br> <font color="#939da3">string</font> | A short text description of the response.
 
-# Коды ошибок
+# Error codes
 
-Код | Сообщение | Комментарии
+Code | Message | Comments
 -:|:-|:-
-**0** | Payload valid | Всё ок.
-**10** | JSON decode error | Некорректный json запрос.
-**20** | Order `order_id` missing | Не указан `order_id`.
-**21** | Wrong order `order_id` format | Неверный формат `order_id`.
-**22** | Order exists | Заявка с данным `order_id` уже существует и финалзирована.
-**23** | Order expired | У заявки с данным `order_id` уже истёк холдирования.
-**24** | Order with specified id not found | Заявка с указанным `order_id` не найден.
-**30** | Wrong order `order_sum` format | Нверный формат `order_sum`.
-**32** | Order amount is different from the amount specified before | Указанная при финализации сумма заказа отличается от суммы, на которую совершен заказ. Финализация не осуществлена.
-**33** | Order amount is outside of tariff_limits | Сумма заявки не входит в диапазон, установленный в тарифе партнёра. Заявка не создана.
-**34** | Order term value is wrong | Указано некорректное значение срока рассрочки `term` (не существует такого тарифа).
-**35** | Order prepayment amount is wrong | Величина `prepayment_amount` превосходит `amount`.
-**40** | Order `callback_url` missing | Не указан `callback_url`.
-**41** | Order `redirect_url` missing | Не указан `redirect_url`.
-**50** | Store id is missing | Не указан `store_id`.
-**51** | Store not found | Не найден магазин с идентификтором `store_id`.
-**60** | `Signature` missing | Не указана цифровая подпись `signature`.
-**61** | `Signature` wrong | Указанная цифровая подпись `signature` некорректна.
-**62** | Error saving file | Ошибка при сохранении файла.
-**70** | Phone number is different | Номер телефона отличается от указанного в заявке.
-**71** | Client has not enough limit | У клиента недостаточно средств для осуществления оплаты частями заказа.
-**80** | Unable to finish - order is already finished/canceled | Не удаётся финализировать заявку - заявка с указанным `order_id` уже финализирована или отменена.
-**81** | Unable to cancel - order is already finished/canceled | Не удаётся отменить заявку - заявка с указанным `order_id` уже финализирована или отменена.
-**82** | Unable to change - order is already finished/canceled | Не удаётся изменить заявку - заявка с указанным `order_id` уже финализирована или отменена.
-**90** | Cart items are missing | Не удаётся изменить заявку - не передана информация о корзине.
-**100** | At the moment the server cannot process your request | Во всех остальных случаях.
+**0** | Payload valid | Everything is OK.
+**10** | JSON decode error | Incorrect json query.
+**20** | Order `order_id` missing |
+**21** | Wrong order `order_id` format |
+**22** | Order exists | Order with specified `order_id` already exist and is finalized.
+**23** | Order expired | Order with specified `order_id` has expired.
+**24** | Order with specified id not found |
+**30** | Wrong order `order_sum` format |
+**32** | Order amount is different from the amount specified before | Occurs when trying to finalize an order with incorrect `amount`.
+**33** | Order amount is outside of tariff_limits | Order amount is outside of tariff limits specified for the partner.
+**34** | Order term value is wrong | Incorrect `term` value is specified.
+**35** | Order prepayment amount is wrong | `prepayment_amount` is greater than `amount`.
+**40** | Order `callback_url` missing |
+**41** | Order `redirect_url` missing |
+**50** | Store id is missing |
+**51** | Store not found | Unable to find store with specified `store_id`.
+**60** | `Signature` missing |
+**61** | `Signature` wrong |
+**62** | Error saving file |
+**70** | Phone number is different |
+**71** | Client has not enough limit | Client has insufficient funds for the specified order.
+**80** | Unable to finish - order is already finished/canceled |
+**81** | Unable to cancel - order is already finished/canceled |
+**82** | Unable to change - order is already finished/canceled |
+**90** | Cart items are missing | Unable to change order - no `cart_items` specified.
+**100** | At the moment the server cannot process your request | Occurs in any other cases.
 
-Тестирование и отладка
+# Testing
 
-Тестирование и отладка интеграции производятся на demo сервере (https://demo.revoplus.ru). При заполнении номера телефона в анкете рекомендуется использовать несуществующий префикс оператора 888, чтобы sms сообщения не отправлялись реальным людям. На production сервере использовать такой префикс нельзя.
+Integration testing is performed on demo server (https://demo.revoplus.ru). As demo server does send SMS messages, it's recommended to use an inexistent 888 phone prefix, so that no SMS messages are sent to real people. It's not allowed to use 888 prefix on production server.
 
-Все коды подтверждения и пин-коды `8888`.
+All confirmation codes and pin codes are `8888`.
 
-* Для получения отказ при использовании <a href="#Registration">`Registration`</a> необходимо указать телефон, начинающийся с 88821.
+* In order to get a negative decision upon <a href="#Registration">`Registration`</a> a phone number starting with 88821 has to be used.
 
-* Для получения одобрения при использовании <a href="#Registration">`Registration`</a> необходимо указать телефон, начинающийся с 888, кроме 88821.
+* In order to get a positive decision upon <a href="#Registration">`Registration`</a> a phone number starting with 888 has to be used, except for 88821.
 
-* Для тестирования на production сервере код задаётся в настройках магазина партнёра. Например, это может быть 7777, вместо 8888.
+* Confirmation code for production server is set up in settings on Revo side (might be different from 8888).
 
-* В анкете идет проверка по ФИО + дате рождения или номеру паспорта на совпадение с существующим клиентом, поэтому при тестировании необходимо вводить различные данные в эти поля.
+* Full name + date of birth or passport number is checked for an existing client. This has to be taken into account when testing.
 
-# Описание iFrame REVO
+# REVO iFrame description
 
-## Регистрация клиента
+## Client registration
 
 ><a href="Registration.png" target="new"> <img src="Registration.png"></a>
 
-1-2. Заполнение анкеты.<br>
-3. Переход на экран подтверждения номера телефона кодом из смс-сообщения.<br>
-3.1 Если клиент допустил ошибку при вводе телефона, то возможен переход на шаг с вводом номера телефона. <br>
-4.1 После ввода корректного смс кода происходит отображение окна с результатом "Оформление прошло успешно" и информацией о доступном лимите.<br>
-4.2 Либо отображение окна с результатом "К сожалению, 'Оплата частями' Вам недоступна".<br>
+1-2. Form completion.<br>
+3. SMS code entry and phone number verification screen.<br>
+3.1 In case of an error in the mobile phone number the client can change the phone number on the corresponding screen. <br>
+4.1 Upon entering the correct sms code, "The registration was successful" screen is displayed. Client's available limit is displayed on this screen.<br>
+4.2 Alternatively the "Unfortunately, installments product is not available to you” screen is displayed.<br>
 
-При вызове iframe Рево на первом экране (1) отображены поля для ввода персональных данных:
+The first Revo iFrame screen has the following personal information data fields:
 
-  * Фамилия
-  * Имя
-  * Отчество
-  * Дата Рождения
-  * Номер мобильного телефона
+  * Last name
+  * First name
+  * Patronymic
+  * Date of birth
+  * Mobile phone number
   * Email
-  * Серия и Номер паспорта
+  * Passport number
 
-Валидация:
+Validation:
 
-  *  Фимилия, Имя, Отвество - принимаются данные только в кириллице. Тип данных `string`.
-  *  Дата рождения - задаётся в формате `dd.mm.yyyy`, тип данных `date`.
-  *  Номер мобильного телефона - необходимо вводить в 10-значном формате, например (888)1231212. Тип данных `string`.
-  *  Email - поле для ввода email, тип данных `string`.
-  *  Серия и номер паспорта - длина должна быть ровно 10 символов, тип данных `string`.
+  *  Last name, first name and patroniФимилия are only accepted as cyrillic characters, `string` data type.
+  *  Date of birth is entered in `dd.mm.yyyy` format, `date` data type.
+  *  Mobile phone number is entered in 10 digit format as (888)1231212, `string` data type.
+  *  Email, `string` data type.
+  *  Passport number has to be of exactly 10 symbols, `string` data type.
 
 <aside class="notice">
-При вызове iframe формы поддерживается возможность автозаполнения полей через тело json запроса.
+It's possible to prefill the first screen using json query.
 </aside>
 
-## Авторизация клиента
+## Client authorization
 
 ><a href="Authentication.png" target="new"> <img src="Authentication.png"></a>
 
-1. Нажатие кнопки Войти на первой странице формы. <br>
-2.1 Ввод мобильного номера и Нажатие кнопки "Отправить СМС". <br>
-2.1 Если мобильный номер не существует в базе Рево, клиент переходит на окно с информационным сообщением "С указанным номером телефона мы Вас не нашли". Нажатие на кнопку "Оформить за 1 минуту" приводит к переход на первый шаг формы. <br>
-3.1 Если мобильный номер существует в базе Рево, клиент переходит на экран Подтверждение мобильного номера кодом из смс-сообщения. <br>
-3.2 Если клиент допустил ошибку при вводе телефона, то возможен переход на шаг с вводом номера телефона. <br>
-4.1 После ввода корректного смс кода происходит отображение окна результата с информацией "Оформление прошло успешно" и информацией о доступном лимите. <br>
-4.2 Либо отображение окна результата с информацией "К сожалению, 'Оплата частями' Вам недоступна". <br>
+1. Login button click on the first screen. <br>
+2.1 Mobile phone entry and "Send SMS" button click.<br>
+2.2 If no such mobile phone number is found in the database, the "We haven't found you with the specified phone number" screen is presented. Clicking on the "Register in 1 minute" button presents the first screen.<br>
+3.1 If a mobile phone number is found in the database, the SMS code confirmation screen is presented. <br>
+3.2 In case of an error in the mobile phone number the client can change the phone number on the corresponding screen. <br>
+4.1 Upon entering the correct SMS code, "The registration was successful" screen is displayed. Client's available limit is displayed on this screen.<br>
+4.2 Alternatively the "Unfortunately, installments product is not available to you” screen is displayed.<br>
 
 <!-- ><a href="FAQ.png" target="new"> <img src="FAQ.png" size="50%"></a> -->
 
-По нажатию на кнопку FAQ в правом верхнем углу формы открывается список с ответами на часто задаваемые вопросы.
+А list of frequently asked questions is displayed in the upper right corner of the form when clicking on the FAQ button.
 
 <aside class="notice">
-При авторизации клиента создаётся 30-минутная сессия, в течении которой при повторных обращениях клиенту сразу открывается финальный экран любой формы.
+A 30-minute session is created upon client authorization. During the session the client will be directly transferred to the results page of any iFrames.
 </aside>
 
 <aside class="notice">
-Если клиент не завершил оформление в форме по истечении 'valid_till', то будет выдано сообщение об ошибке "К сожалению, время резервирования заказа вышло.".
+In case the client hasn’t completed the registration form before the `valid_till` period expires, an error message will be presented "Unfortunately, order reservation period has expired.".
 </aside>
 
-## Оформление покупки
+## Checkout
 
 ><a href="Checkout.png" target="new"> <img src="Checkout.png"></a>
 
-1. Заполнение анкеты. <br>
-2.1 Переход на экран подтверждения номера телефона кодом из смс-сообщения.<br>
-2.2 Если клиент допустил ошибку при вводе телефона, то возможен переход на шаг с вводом номера телефона. <br>
-3.1 Если для оформления заказа не требуется предоплата, то идёт переход на экран, где клиенту необходимо выбрать один из возможных для данной суммы заказа периодов оплаты. <br>
-3.1 Если для оформления заказа клиенту необходимо внести предоплату, то идёт переход на экран, где клиенту необходимо выбрать один из возможных для данной суммы заказа периодов оплаты, а также указать желаемую величину предоплаты. <br>
-4.1 После успешного оформления заказа без предоплаты происходит отображение окна результата с информацией "Оформление прошло успешно" и кнопкой для возврата в магазин. <br>
-4.2 Либо отображение окна результата с информацией "К сожалению, 'Оплата частями' Вам недоступна". <br>
-4.3 После успешного оформления заказа с предоплатой происходит отображение окна результата с инфомрмацией "Оформление прошло успешно" и кнопкой для перехода к оплате картой. <br>
-4.4 Либо отображение окна результата с информацией "К сожалению, 'Оплата частями' Вам недоступна". <br>
+1. Form completion. <br>
+2.1 Mobile phone entry and "Send SMS" button click.<br>
+2.2 In case of an error in the mobile phone number the client can change the phone number on the corresponding screen. <br>
+3.1 In case prepayment is not required a screen with term selection is presented. <br>
+3.2 In case prepayment is required a screen with term selection and prepayment amount slider is presented. <br>
+4.1 In case of successful checkout without prepayment a "Checkout successful" screen is presented with a button to return to the Parter web site. <br>
+4.2 Alternatively the "Unfortunately, installments product is not available to you” screen is displayed. <br>
+4.3 In case of successful checkout with prepayment a "Checkout successful" screen is presented with a button that opens Parter's payment page.<br>
+4.4 Alternatively the "Unfortunately, installments product is not available to you” screen is displayed.<br>
 
-# Представление на сайте
+# Website presentation
 
-Рекомендации по представлению услуги Оплата частями на партёнрском сайте представлены в <a href="REVO Presentation.pdf" target="new">презентации</a>. Ниже приведены инструкции по реализации отдельных элементов Рево из презентации.
+Recommendations on how to present Revo installments product on a Partner web site are available <a href="REVO Presentation.pdf" target="new">here</a>. Implementation of individual elements is described below.
 
-## Вызов iFrame
+## iFrame generation
 
 ```javascript
 REVO.Form.show(iframe_url, target_selector);
 ```
 
-По нажатию на кнопки "Оформить за 1 минуту", "?" справа от надписи "или 150 Р/мес" и "Оплата" при выбранном способе "Оплата частями" необходимо вызвать iFrame Рево для регистрации и оформления заказа, соответственно. Для этого нужно получить с помощью метода <a href="#Registration">`Registration`</a> или <a href="#Checkout">`Checkout`</a> ссылку на iFrame и передать её в js метод плагина REVO.
+Revo Registration iFrame has to be called when any of the following buttons are clicked: "Register in 1 minute", "?" to right from "or 150 Rub/month". Revo Checkout iFrame has to be called when "Pay with REVO" button is clicked on the checkout page. That is performed by generating a link with <a href="#Registration">`Registration`</a> or <a href="#Checkout">`Checkout`</a> methods and sending the link to a js method from Revo plugin.
 
-`iframe_url` – адрес открываемого iFrame, обязательный параметр.
-`target_selector` – селектор элемента, внутрь которого должен быть вставлен iFrame.
+`iframe_url` – iFame URL, obligatory parameter.
+`target_selector` – element selector that will contain the iFrame.
 
-Далее работает предоставленный Рево плагин js (реализован в виде модуля REVO), который вставляет ``<iframe src= iframe_url />`` и производит манипуляции с этим iFrame.
+Revo JS plugin then inserts `<iframe src= iframe_url />` and processed iFrame operations.
 
-Плагин доступен по адресу: `https://{BASE_URI}/javascripts/iframe/v2/revoiframe.js` и его можно добавить на страницу интернет магазина.
+Plugin is available at the following address: `https://{BASE_URI}/javascripts/iframe/v2/revoiframe.js`.
 
 ```html
 <script src="https://{BASE_URI}/javascripts/iframe/v2/revoiframe.js"></script>
 ```
 
-Также данный плагин предоставляет возможность получения событий: закрытия формы - `onClose`, загрузки формы - `onLoad` и принятия решения по заявке - `onResult`.
+Plugin also supports the following events: form closed - `onClose`, form loaded - `onLoad`, decision made - `onResult`.
 
 ```javascript
 REVO.Form.onClose(function () { alert('closed'); });
@@ -1110,13 +1111,14 @@ REVO.Form.onLoad(function () { console.log('frame loaded'); });
 REVO.Form.onResult(function() { console.log('result'); });
 ```
 <aside class="success">
-При необходимости отобразить iFrame на отдельной странице следует напрямую открывать `iframe_url`. Настройка фона этой страницы производится на стороне Рево.
+In case when iFrame has to opened on a separate page `iframe_url` has to be called directly. Background is adjustable on Revo side.
 </aside>
 
 ## Отображение доступного лимита
 
-Если клиент уже прошёл регистрацию и получил лимит, то доступные ему для Оплаты частями средства можно отображать с помощью метода <a href="#limit">Limit</a>.
+Funds available to the already registered client might be obtained using the <a href="#limit">Limit</a> method.
 
+<!--
 # Тестирование и отладка
 
 ## Тестовые Параметры
@@ -1134,8 +1136,6 @@ REVO.Form.onResult(function() { console.log('result'); });
 <aside class="notice">
 Данные параметры предназначены только для demo сервиса.
 </aside>
-
-
 
 ## Кейсы для тестирования
 
@@ -1271,4 +1271,4 @@ signature = Digest::SHA1.hexdigest(data + secret_key)
 
 Что происходит:
 
-* Клиента переводит на окно подтверждения кода из смс. Если клиент подтверждает код из смс, то происходит переход на окно с корзиной и графиком платежей. Далее переход на окно с результатом, где отображается информационное сообщение об успешном оформлении. (Подробнее в описание <a href="#ee363a7d6e"> Оформление покупки</a>)
+* Клиента переводит на окно подтверждения кода из смс. Если клиент подтверждает код из смс, то происходит переход на окно с корзиной и графиком платежей. Далее переход на окно с результатом, где отображается информационное сообщение об успешном оформлении. (Подробнее в описание <a href="#ee363a7d6e"> Оформление покупки</a>) -->
