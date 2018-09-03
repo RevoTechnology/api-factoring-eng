@@ -118,7 +118,7 @@ public class Main {
 }
 ```
 
-A secret key `secret_key` is added to the data string in json format. SHA1 algorithm is then used to the generate a string which forms a digital `signature`.
+A secret key `secret_key` is added to an escaped (adding `\` in front of `"` and `\`) json body `data` string. SHA1 algorithm is then used to the generate a string which forms a digital `signature`.
 
 <aside class="notice">
 Please note, that the signature length will always be 40 symbols according to SHA1.
