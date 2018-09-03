@@ -39,7 +39,7 @@ BASE_URL = "https://demo.revoplus.ru/"
 1. To interact with Revo services, two base addresses are used:
  * https://r.revoplus.ru/ - the `production` address of the service.
  * https://demo.revoup.ru/ - the `demo` address of the service.
-2. `BASE_URL` - переменная обозначающая базовый адрес.
+2. `BASE_URL` - variable containing the base address.
 
 <aside class="notice">
 The connection is only supported via HTTPS protocol - when trying to connect via HTTP, error 404 will occur.
@@ -1114,7 +1114,7 @@ REVO.Form.onResult(function() { console.log('result'); });
 In case when iFrame has to opened on a separate page `iframe_url` has to be called directly. Background is adjustable on Revo side.
 </aside>
 
-## Отображение доступного лимита
+## Displaying client's available funds
 
 Funds available to the already registered client might be obtained using the <a href="#limit">Limit</a> method.
 
