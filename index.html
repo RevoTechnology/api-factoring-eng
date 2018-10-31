@@ -295,7 +295,7 @@
                     <a href="#iframe-generation" class="toc-h2 toc-link" data-title="iframe-generation">iFrame generation</a>
                   </li>
                   <li>
-                    <a href="#818f499a59" class="toc-h2 toc-link" data-title="">Отображение доступного лимита</a>
+                    <a href="#displaying-client-39-s-available-funds" class="toc-h2 toc-link" data-title="displaying-client-s-available-funds">Displaying client's available funds</a>
                   </li>
               </ul>
           </li>
@@ -319,17 +319,17 @@
 <li><a href="#5a291e242a">Visualisation on a partner website</a>.</li>
 <li><a href="#db947828e5">Test manual</a>.</li>
 </ul>
-<h1 id='authorization'>Authorization</h1><h2 id='base-url-addresses'>Base URL addresses</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">BASE_URL</span> <span class="o">=</span> <span class="s2">"https://r.revoplus.ru/"</span>
-<span class="nx">BASE_URL</span> <span class="o">=</span> <span class="s2">"https://demo.revoplus.ru/"</span>
+<h1 id='authorization'>Authorization</h1><h2 id='base-url-addresses'>Base URL addresses</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">BASE_URL</span> <span class="o">=</span> <span class="s2">"https://r.revo.ru"</span>
+<span class="nx">BASE_URL</span> <span class="o">=</span> <span class="s2">"https://demo.revoup.ru"</span>
 </code></pre>
 <ol>
 <li>To interact with Revo services, two base addresses are used:
 
 <ul>
-<li>https://r.revoplus.ru/ - the <code>production</code> address of the service.</li>
-<li>https://demo.revoup.ru/ - the <code>demo</code> address of the service.</li>
+<li>https://r.revo.ru - the <code>production</code> address of the service.</li>
+<li>https://demo.revoup.ru - the <code>demo</code> address of the service.</li>
 </ul></li>
-<li><code>BASE_URL</code> - переменная обозначающая базовый адрес.</li>
+<li><code>BASE_URL</code> - variable containing the base address.</li>
 </ol>
 
 <aside class="notice">
@@ -373,7 +373,7 @@ The connection is only supported via HTTPS protocol - when trying to connect via
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
 
     <span class="kd">static</span> <span class="n">String</span> <span class="n">secret_key</span> <span class="o">=</span> <span class="s">"098f6bcd4621d373cade4e832627b4f6"</span><span class="o">;</span> <span class="c1">// Это пример</span>
-    <span class="kd">static</span> <span class="n">String</span> <span class="n">data</span> <span class="o">=</span> <span class="s">"{\"callback_url\":\"https://shop.ru/revo/decision\",\"redirect_url\":\"https://shop.ru/revo/redirect\",\"current_order\":{\"sum\":\"7500.00\",\"order_id\":\"R001233\"},\"primary_phone\":\"9268180621\"}"</span><span class="o">;</span>
+    <span class="kd">static</span> <span class="n">String</span> <span class="n">data</span> <span class="o">=</span> <span class="s">"{\"callback_url\":\"https://shop.ru/revo/decision\",\"redirect_url\":\"https://shop.ru/revo/redirect\",\"current_order\":{\"amount\":\"7500.00\",\"order_id\":\"R001233\"},\"primary_phone\":\"9268180621\"}"</span><span class="o">;</span>
 
     <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
 
@@ -407,7 +407,7 @@ The connection is only supported via HTTPS protocol - when trying to connect via
     <span class="o">}</span>
 <span class="o">}</span>
 </code></pre>
-<p>A secret key <code>secret_key</code> is added to the data string in json format. SHA1 algorithm is then used to the generate a string which forms a digital <code>signature</code>.</p>
+<p>A secret key <code>secret_key</code> is added to an escaped (adding <code>\</code> in front of <code>&quot;</code> and <code>\</code>) json body <code>data</code> string. SHA1 algorithm is then used to the generate a string which forms a digital <code>signature</code>.</p>
 
 <aside class="notice">
 Please note, that the signature length will always be 40 symbols according to SHA1.
@@ -513,7 +513,7 @@ The personal data provided by the client on the partner's website should be sent
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
   <span class="s">"status"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
   <span class="s">"message"</span><span class="p">:</span> <span class="s">"Payload valid"</span><span class="p">,</span>
-  <span class="s">"iframe_url"</span><span class="p">:</span> <span class="s">"https://r.revoplus.ru/form/v1/af45ef12f4233f"</span>
+  <span class="s">"iframe_url"</span><span class="p">:</span> <span class="s">"https://r.revo.ru/form/v1/af45ef12f4233f"</span>
 <span class="p">}</span>
 </code></pre>
 <table><thead>
@@ -742,7 +742,8 @@ The personal data provided by the client on the partner's website should be sent
     <span class="s">"name"</span><span class="p">:</span> <span class="s">"Samsung Note 8"</span><span class="p">,</span>
     <span class="s">"price"</span><span class="p">:</span> <span class="mi">55999</span><span class="p">,</span>
     <span class="s">"quantity"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="s">"brand"</span><span class="p">:</span> <span class="s">"Samsung"</span>
+    <span class="s">"brand"</span><span class="p">:</span> <span class="s">"Samsung"</span><span class="p">,</span>
+    <span class="s">"category"</span><span class="p">:</span> <span class="s">"Mobile phone"</span>
   <span class="p">},</span>
   <span class="p">{</span>
     <span class="s">"sku"</span><span class="p">:</span> <span class="s">"23543"</span><span class="p">,</span>
@@ -750,9 +751,20 @@ The personal data provided by the client on the partner's website should be sent
     <span class="s">"price"</span><span class="p">:</span> <span class="mi">3500</span><span class="p">,</span>
     <span class="s">"sale_price"</span><span class="p">:</span> <span class="mi">2999</span><span class="p">,</span>
     <span class="s">"quantity"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="s">"brand"</span> <span class="p">:</span> <span class="s">"Samsung"</span>
+    <span class="s">"brand"</span> <span class="p">:</span> <span class="s">"Samsung"</span><span class="p">,</span>
+    <span class="s">"category"</span><span class="p">:</span> <span class="s">"Accessories"</span>
   <span class="p">}],</span>
   <span class="s">"skip_result_page"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="s">"delivery_info"</span><span class="p">:</span>
+  <span class="p">{</span>
+    <span class="s">"first_name"</span><span class="p">:</span> <span class="s">"Петр"</span><span class="p">,</span>
+    <span class="s">"surname"</span><span class="p">:</span> <span class="s">"Чернышев"</span><span class="p">,</span>
+    <span class="s">"patronymic"</span><span class="p">:</span> <span class="s">"Александрович"</span><span class="p">,</span>
+    <span class="s">"type"</span><span class="p">:</span> <span class="s">"Pickpoint"</span><span class="p">,</span>
+    <span class="s">"address"</span><span class="p">:</span> <span class="s">"ул. Ленина, д.1"</span><span class="p">,</span>
+    <span class="s">"phone"</span><span class="p">:</span> <span class="s">"9268180621"</span><span class="p">,</span>
+    <span class="s">"email"</span><span class="p">:</span> <span class="s">"ivan@gmail.com"</span>
+  <span class="p">},</span>
   <span class="s">"additional_data"</span><span class="p">:</span>
   <span class="p">[{</span>
     <span class="s">"name"</span><span class="p">:</span> <span class="s">"Color"</span><span class="p">,</span>
@@ -1824,11 +1836,6 @@ Finilizing an order that has already been expired will result in execution of `C
 <td style="text-align: left"></td>
 </tr>
 <tr>
-<td style="text-align: right"><strong>30</strong></td>
-<td style="text-align: left">Wrong order <code>order_sum</code> format</td>
-<td style="text-align: left"></td>
-</tr>
-<tr>
 <td style="text-align: right"><strong>32</strong></td>
 <td style="text-align: left">Order amount is different from the amount specified before</td>
 <td style="text-align: left">Occurs when trying to finalize an order with incorrect <code>amount</code>.</td>
@@ -1920,7 +1927,7 @@ Finilizing an order that has already been expired will result in execution of `C
 </tr>
 </tbody></table>
 <h1 id='testing'>Testing</h1>
-<p>Integration testing is performed on demo server (https://demo.revoplus.ru). As demo server does send SMS messages, it&#39;s recommended to use an inexistent 888 phone prefix, so that no SMS messages are sent to real people. It&#39;s not allowed to use 888 prefix on production server.</p>
+<p>Integration testing is performed on demo server (https://demo.revoup.ru). As demo server does send SMS messages, it&#39;s recommended to use an inexistent 888 phone prefix, so that no SMS messages are sent to real people. It&#39;s not allowed to use 888 prefix on production server.</p>
 
 <p>All confirmation codes and pin codes are <code>8888</code>.</p>
 
@@ -2030,7 +2037,7 @@ In case the client hasn’t completed the registration form before the `valid_ti
 <aside class="success">
 In case when iFrame has to opened on a separate page `iframe_url` has to be called directly. Background is adjustable on Revo side.
 </aside>
-<h2 id='818f499a59'>Отображение доступного лимита</h2>
+<h2 id='displaying-client-39-s-available-funds'>Displaying client&#39;s available funds</h2>
 <p>Funds available to the already registered client might be obtained using the <a href="#limit">Limit</a> method.</p>
 
 <!--
