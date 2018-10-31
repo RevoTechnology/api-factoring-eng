@@ -32,13 +32,13 @@ The documentation consists of 4 main parts:
 ## Base URL addresses
 
 ```javascript
-BASE_URL = "https://r.revoplus.ru/"
-BASE_URL = "https://demo.revoplus.ru/"
+BASE_URL = "https://r.revo.ru"
+BASE_URL = "https://demo.revoup.ru"
 ```
 
 1. To interact with Revo services, two base addresses are used:
- * https://r.revoplus.ru/ - the `production` address of the service.
- * https://demo.revoup.ru/ - the `demo` address of the service.
+ * https://r.revo.ru - the `production` address of the service.
+ * https://demo.revoup.ru - the `demo` address of the service.
 2. `BASE_URL` - variable containing the base address.
 
 <aside class="notice">
@@ -83,7 +83,7 @@ import java.util.Formatter;
 public class Main {
 
     static String secret_key = "098f6bcd4621d373cade4e832627b4f6"; // Это пример
-    static String data = "{\"callback_url\":\"https://shop.ru/revo/decision\",\"redirect_url\":\"https://shop.ru/revo/redirect\",\"current_order\":{\"sum\":\"7500.00\",\"order_id\":\"R001233\"},\"primary_phone\":\"9268180621\"}";
+    static String data = "{\"callback_url\":\"https://shop.ru/revo/decision\",\"redirect_url\":\"https://shop.ru/revo/redirect\",\"current_order\":{\"amount\":\"7500.00\",\"order_id\":\"R001233\"},\"primary_phone\":\"9268180621\"}";
 
     public static void main(String[] args) {
 
@@ -186,7 +186,7 @@ The personal data provided by the client on the partner's website should be sent
 {
   "status": 0,
   "message": "Payload valid",
-  "iframe_url": "https://r.revoplus.ru/form/v1/af45ef12f4233f"
+  "iframe_url": "https://r.revo.ru/form/v1/af45ef12f4233f"
 }
 ```
 
@@ -362,7 +362,8 @@ The personal data provided by the client on the partner's website should be sent
     "name": "Samsung Note 8",
     "price": 55999,
     "quantity": 1,
-    "brand": "Samsung"
+    "brand": "Samsung",
+    "category": "Mobile phone"
   },
   {
     "sku": "23543",
@@ -370,9 +371,20 @@ The personal data provided by the client on the partner's website should be sent
     "price": 3500,
     "sale_price": 2999,
     "quantity": 1,
-    "brand" : "Samsung"
+    "brand" : "Samsung",
+    "category": "Accessories"
   }],
   "skip_result_page": true,
+  "delivery_info":
+  {
+    "first_name": "Петр",
+    "surname": "Чернышев",
+    "patronymic": "Александрович",
+    "type": "Pickpoint",
+    "address": "ул. Ленина, д.1",
+    "phone": "9268180621",
+    "email": "ivan@gmail.com"
+  },
   "additional_data":
   [{
     "name": "Color",
@@ -974,7 +986,6 @@ Code | Message | Comments
 **22** | Order exists | Order with specified `order_id` already exist and is finalized.
 **23** | Order expired | Order with specified `order_id` has expired.
 **24** | Order with specified id not found |
-**30** | Wrong order `order_sum` format |
 **32** | Order amount is different from the amount specified before | Occurs when trying to finalize an order with incorrect `amount`.
 **33** | Order amount is outside of tariff_limits | Order amount is outside of tariff limits specified for the partner.
 **34** | Order term value is wrong | Incorrect `term` value is specified.
@@ -996,7 +1007,7 @@ Code | Message | Comments
 
 # Testing
 
-Integration testing is performed on demo server (https://demo.revoplus.ru). As demo server does send SMS messages, it's recommended to use an inexistent 888 phone prefix, so that no SMS messages are sent to real people. It's not allowed to use 888 prefix on production server.
+Integration testing is performed on demo server (https://demo.revoup.ru). As demo server does send SMS messages, it's recommended to use an inexistent 888 phone prefix, so that no SMS messages are sent to real people. It's not allowed to use 888 prefix on production server.
 
 All confirmation codes and pin codes are `8888`.
 
